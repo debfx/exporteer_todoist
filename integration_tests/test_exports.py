@@ -1,8 +1,7 @@
-import csv
+from io import BytesIO
 import json
 from exporteer_todoist import cli
-from pathlib import Path
-from tempfile import TemporaryDirectory
+from zipfile import ZipFile
 
 
 def test_full_sync(capsys):
@@ -17,14 +16,10 @@ def test_full_sync(capsys):
     assert len(parsed['items']) > 1
 
 
-def test_latest_backup():
-    with TemporaryDirectory() as rawpath:
-        cli.main(['latest_backup', rawpath])
-        path = Path(rawpath)
-        cpaths = list(path.glob('*.csv'))
-        assert len(cpaths) > 1
-        maxlen = 0
-        for cpath in cpaths:
-            with open(cpath) as file:
-                maxlen = max(maxlen, len(list(csv.reader(file))))
-        assert maxlen > 1
+def test_latest_backup(capfdbinary):
+    assert cli.main(['latest_backup']) == 0
+    cap = capfdbinary.readouterr()
+    data = BytesIO(cap.out)
+    zf = ZipFile(data)
+    assert len([n for n in zf.namelist() if n.endswith('.csv')]) > 0
+

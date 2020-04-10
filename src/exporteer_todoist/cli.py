@@ -2,10 +2,7 @@ import argparse
 import os
 import requests
 import sys
-from io import BytesIO
 from operator import itemgetter
-from pathlib import Path
-from zipfile import ZipFile
 
 
 def get_token():
@@ -41,17 +38,8 @@ def latest_backup(args):
     headers = {'Authorization': f'Bearer {token}'}
     resp = requests.get(url, headers=headers)
     resp.raise_for_status()
-    zipdata = BytesIO(resp.content)
-
-    target_dir = Path(args.target_dir[0])
-    if not target_dir.exists():
-        target_dir.mkdir(parents=True, exist_ok=True)
-    elif target_dir.is_file():
-        print(f'expected a directory: {target_dir}', file=sys.stderr)
-        return 1
-
-    with ZipFile(zipdata, 'r') as zf:
-        zf.extractall(target_dir)
+    sys.stdout.buffer.write(resp.content)
+    sys.stdout.buffer.flush()
 
     return 0
 
@@ -67,12 +55,8 @@ def main(args=None):
     p_full_sync.set_defaults(func=full_sync)
 
     p_latest_backup = subs.add_parser('latest_backup',
-                                      help='download and unpack the latest' +
-                                      ' backup zip to specified directory')
+                                      help='download latest backup zip')
     p_latest_backup.set_defaults(func=latest_backup)
-    p_latest_backup.add_argument('target_dir', nargs=1,
-                                 help='directory to write contents of zip' +
-                                 'file to (will be created if necessary)')
 
     args = parser.parse_args(args)
     if not args.func:
