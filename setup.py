@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="exporteer_todoist",
-    version="0.0.1",
+    version="0.0.2",
     author="Jacob Williams",
     author_email="jacobaw@gmail.com",
     description="Downloads data from Todoist and saves it to the filesystem.",
