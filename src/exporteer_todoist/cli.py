@@ -1,5 +1,4 @@
 import argparse
-import json
 import os
 import requests
 import sys
@@ -22,7 +21,7 @@ def full_sync(args):
     params = {'token': token, 'sync_token': '*', 'resource_types': '["all"]'}
     resp = requests.get('https://api.todoist.com/sync/v8/sync', params=params)
     resp.raise_for_status()
-    print(json.dumps(resp.json(), indent=2))
+    print(resp.text)
     return 0
 
 

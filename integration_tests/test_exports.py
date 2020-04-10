@@ -1,4 +1,3 @@
-import argparse
 import csv
 import json
 from exporteer_todoist import cli
