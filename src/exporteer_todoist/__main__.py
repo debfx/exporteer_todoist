@@ -1,4 +1,4 @@
-from middling_export_todoist import cli
+from exporteer_todoist import cli
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@ import csv
 import json
 import io
 import unittest
-from middling_export_todoist import cli
+from exporteer_todoist import cli
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
