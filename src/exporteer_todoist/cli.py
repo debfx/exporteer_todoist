@@ -23,6 +23,7 @@ def full_sync(args):
     resp = requests.get('https://api.todoist.com/sync/v8/sync', params=params)
     resp.raise_for_status()
     print(json.dumps(resp.json(), indent=2))
+    return 0
 
 
 def latest_backup(args):
@@ -35,7 +36,7 @@ def latest_backup(args):
     versions = sorted(resp.json(), key=itemgetter('version'), reverse=True)
     if len(versions) <= 0:
         print('no backups available', file=sys.stderr)
-        sys.exit(2)
+        return 2
 
     url = versions[0]['url']
     headers = {'Authorization': f'Bearer {token}'}
@@ -48,13 +49,15 @@ def latest_backup(args):
         target_dir.mkdir(parents=True, exist_ok=True)
     elif target_dir.is_file():
         print(f'expected a directory: {target_dir}', file=sys.stderr)
-        sys.exit(1)
+        return 1
 
     with ZipFile(zipdata, 'r') as zf:
         zf.extractall(target_dir)
 
+    return 0
 
-def main():
+
+def main(args=None):
     parser = argparse.ArgumentParser()
     parser.set_defaults(func=None)
 
@@ -72,8 +75,8 @@ def main():
                                  help='directory to write contents of zip' +
                                  'file to (will be created if necessary)')
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     if not args.func:
         parser.print_help()
-        return
-    args.func(args)
+        return 1
+    return args.func(args)

@@ -1,19 +1,15 @@
 import argparse
-import contextlib
 import csv
 import json
-import io
 from exporteer_todoist import cli
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 
-def test_full_sync():
-    out = io.StringIO()
-    with contextlib.redirect_stdout(out):
-        cli.full_sync(None)
-    result = out.getvalue()
-    parsed = json.loads(result)
+def test_full_sync(capsys):
+    assert cli.main(['full_sync']) == 0
+    cap = capsys.readouterr()
+    parsed = json.loads(cap.out)
     keys = parsed.keys()
     assert 'projects' in keys
     assert 'items' in keys
@@ -24,9 +20,7 @@ def test_full_sync():
 
 def test_latest_backup():
     with TemporaryDirectory() as rawpath:
-        args = argparse.Namespace()
-        args.target_dir = [rawpath]
-        cli.latest_backup(args)
+        cli.main(['latest_backup', rawpath])
         path = Path(rawpath)
         cpaths = list(path.glob('*.csv'))
         assert len(cpaths) > 1
