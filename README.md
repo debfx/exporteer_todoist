@@ -8,7 +8,7 @@ This is a very simple tool for exporting data from Todoist via their API.
 2. `pip install exporteer_todoist`
 3. [Look up your API token](https://todoist.com/prefs/integrations)
 
-To download the latest backup as a zip file:
+To download the latest backup (i.e., what you would get by going to 'Backups' in 'Settings' in Todoist) as a zip file:
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
