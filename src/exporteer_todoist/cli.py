@@ -38,11 +38,16 @@ def _latest_backup(args):
         print('no backups available', file=sys.stderr)
         return 2
 
+    if args.output == '-':
+        output_file = sys.stdout.buffer
+    else:
+        output_file = open(args.output, 'wb')
+
     url = versions[0]['url']
     resp = requests.get(url, headers=headers)
     resp.raise_for_status()
-    sys.stdout.buffer.write(resp.content)
-    sys.stdout.buffer.flush()
+    output_file.write(resp.content)
+    output_file.flush()
 
     return 0
 
@@ -64,6 +69,8 @@ def main(args=None):
 
     p_latest_backup = subs.add_parser('latest_backup',
                                       help='download latest backup zip')
+    p_latest_backup.add_argument('--output', '-o', default='-',
+                                 help='path to write the zip file to (defaults to "-" for stdout)')
     p_latest_backup.set_defaults(func=_latest_backup)
 
     args = parser.parse_args(args)
