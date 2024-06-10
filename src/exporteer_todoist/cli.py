@@ -18,8 +18,9 @@ def _get_token():
 
 def _full_sync(args):
     token = _get_token()
-    params = {'token': token, 'sync_token': '*', 'resource_types': '["all"]'}
-    resp = requests.get('https://api.todoist.com/sync/v8/sync', params=params)
+    params = {'sync_token': '*', 'resource_types': '["all"]'}
+    headers = {'Authorization': f'Bearer {token}'}
+    resp = requests.get('https://api.todoist.com/sync/v9/sync', params=params, headers=headers)
     resp.raise_for_status()
     print(resp.text)
     return 0
@@ -27,9 +28,9 @@ def _full_sync(args):
 
 def _latest_backup(args):
     token = _get_token()
-    params = {'token': token}
-    resp = requests.get('https://api.todoist.com/sync/v8/backups/get',
-                        params=params)
+    headers = {'Authorization': f'Bearer {token}'}
+    resp = requests.get('https://api.todoist.com/sync/v9/backups/get',
+                        headers=headers)
     resp.raise_for_status()
 
     versions = sorted(resp.json(), key=itemgetter('version'), reverse=True)
@@ -38,7 +39,6 @@ def _latest_backup(args):
         return 2
 
     url = versions[0]['url']
-    headers = {'Authorization': f'Bearer {token}'}
     resp = requests.get(url, headers=headers)
     resp.raise_for_status()
     sys.stdout.buffer.write(resp.content)

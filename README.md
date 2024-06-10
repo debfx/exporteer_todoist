@@ -15,7 +15,7 @@ export TODOIST_API_TOKEN=your_token_here
 exporteer_todoist latest_backup > backup.zip
 ```
 
-To download JSON representing a [full sync](https://developer.todoist.com/sync/v8/#sync):
+To download JSON representing a [full sync](https://developer.todoist.com/sync/v9/#sync):
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
@@ -25,8 +25,8 @@ exporteer_todoist full_sync > backup.json
 Note that the latter is essentially equivalent to just running this curl command:
 
 ```bash
-curl https://api.todoist.com/sync/v8/sync \
-    -d token=your_token_here \
+curl https://api.todoist.com/sync/v9/sync \
+    -H 'Bearer: your_token_here' \
     -d sync_token='*' \
     -d resource_types='["all"]' \
     > backup.json
