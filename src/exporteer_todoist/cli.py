@@ -33,7 +33,14 @@ def _full_sync(args):
     headers = {'Authorization': f'Bearer {token}'}
     resp = requests.get('https://api.todoist.com/sync/v9/sync', params=params, headers=headers)
     resp.raise_for_status()
-    print(resp.text)
+
+    if args.output == '-':
+        output_file = sys.stdout
+    else:
+        output_file = open(args.output, 'w')
+
+    output_file.write(resp.text)
+
     return 0
 
 
@@ -116,6 +123,8 @@ def main(args=None):
 
     p_full_sync = subs.add_parser('full_sync', help='export the json output' +
                                                     ' of the sync endpoint')
+    p_full_sync.add_argument('--output', '-o', default='-',
+                             help='path to write the json file to (defaults to "-" for stdout)')
     p_full_sync.set_defaults(func=_full_sync)
 
     p_latest_backup = subs.add_parser('latest_backup',

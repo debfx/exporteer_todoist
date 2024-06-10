@@ -26,7 +26,7 @@ To download JSON representing a [full sync](https://developer.todoist.com/sync/v
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
-exporteer_todoist full_sync > backup.json
+exporteer_todoist full_sync --output backup.json
 ```
 
 Note that the latter is essentially equivalent to just running this curl command:
