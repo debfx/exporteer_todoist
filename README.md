@@ -5,28 +5,29 @@ This is a very simple tool for exporting data from Todoist via their API.
 ## Getting Started
 
 1. Install python3 and pip
-2. `pip install exporteer_todoist`
-3. [Look up your API token](https://todoist.com/prefs/integrations)
+2. `git clone https://github.com/debfx/exporteer_todoist.git`
+3. `pip install requests`
+4. [Look up your API token](https://todoist.com/prefs/integrations)
 
 To download the latest backup (i.e., what you would get by going to 'Backups' in 'Settings' in Todoist) as a zip file:
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
-exporteer_todoist latest_backup --output backup.zip
+python3 -m exporteer_todoist latest_backup --output backup.zip
 ```
 
 To include all file attachments in the zip file backup:
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
-exporteer_todoist latest_backup --output backup.zip --attachments
+python3 -m exporteer_todoist latest_backup --output backup.zip --attachments
 ```
 
 To download JSON representing a [full sync](https://developer.todoist.com/sync/v9/#sync):
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
-exporteer_todoist full_sync --output backup.json
+python3 -m exporteer_todoist full_sync --output backup.json
 ```
 
 Note that the latter is essentially equivalent to just running this curl command:
