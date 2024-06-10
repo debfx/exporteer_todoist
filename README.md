@@ -12,7 +12,14 @@ To download the latest backup (i.e., what you would get by going to 'Backups' in
 
 ```bash
 export TODOIST_API_TOKEN=your_token_here
-exporteer_todoist latest_backup > backup.zip
+exporteer_todoist latest_backup --output backup.zip
+```
+
+To include all file attachments in the zip file backup:
+
+```bash
+export TODOIST_API_TOKEN=your_token_here
+exporteer_todoist latest_backup --output backup.zip --attachments
 ```
 
 To download JSON representing a [full sync](https://developer.todoist.com/sync/v9/#sync):
