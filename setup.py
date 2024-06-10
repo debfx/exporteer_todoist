@@ -12,8 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/brokensandals/exporteer_todoist",
-    packages=setuptools.find_packages('src'),
-    package_dir={'':'src'},
+    packages=["exporteer_todoist"],
     entry_points={
         'console_scripts': [
             'exporteer_todoist = exporteer_todoist.cli:main'
