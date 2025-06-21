@@ -31,7 +31,7 @@ def _full_sync(args):
     token = _get_token()
     params = {'sync_token': '*', 'resource_types': '["all"]'}
     headers = {'Authorization': f'Bearer {token}'}
-    resp = requests.get('https://api.todoist.com/sync/v9/sync', params=params, headers=headers)
+    resp = requests.post('https://api.todoist.com/api/v1/sync', data=params, headers=headers)
     resp.raise_for_status()
 
     if args.output == '-':
@@ -81,7 +81,7 @@ def _backup_attachments(backup_file, download_headers) -> None:
 def _latest_backup(args):
     token = _get_token()
     headers = {'Authorization': f'Bearer {token}'}
-    resp = requests.get('https://api.todoist.com/sync/v9/backups/get',
+    resp = requests.get('https://api.todoist.com/api/v1/backups/',
                         headers=headers)
     resp.raise_for_status()
 
